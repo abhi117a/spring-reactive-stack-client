@@ -20,6 +20,17 @@ public class ItemClientController {
         .uri("/v1/items")
         .retrieve()
         .bodyToFlux(Item.class)
-        .log("Items from Client");
+        .log("Items from Client using retrieve: ");
+  }
+
+  @GetMapping("/client/exchange")
+  public Flux<Item> getAllItemsUsingExchange() {
+
+    return webClient
+        .get()
+        .uri("/v1/items")
+        .exchange()
+        .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Item.class))
+        .log("Items from Client Using exchange: ");
   }
 }
